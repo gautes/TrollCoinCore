@@ -118,7 +118,8 @@ public:
        
 
 
-consensus.hashGenesisBlock = uint256S("0x001");
+consensus.hashGenesisBlock = uint256S("0x01");
+strprintf("Trollcoin Lets start!!");        
 if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         {
             strprintf("recalculating params for mainnet.\n");
@@ -138,6 +139,7 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         //assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
+        /*
         vSeeds.push_back(CDNSSeedData("trollcoin.sipa.be", "seed.trollcoin.sipa.be", true)); // Pieter Wuille, only supports x1, x5, x9, and xd
         vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me", true)); // Matt Corallo, only supports x9
         vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.trollcoin.dashjr.org")); // Luke Dashjr
@@ -145,6 +147,7 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         vSeeds.push_back(CDNSSeedData("trollcoin.jonasschnelli.ch", "seed.trollcoin.jonasschnelli.ch", true)); // Jonas Schnelli, only supports x1, x5, x9, and xd
         vSeeds.push_back(CDNSSeedData("petertodd.org", "seed.TRC.petertodd.org", true)); // Peter Todd, only supports x1, x5, x9, and xd
 
+        */
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,1);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,2);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,118);
@@ -152,8 +155,9 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x03)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-vFixedSeeds.clear();
-vSeeds.clear();
+        vFixedSeeds.clear();
+        vSeeds.clear();
+        
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
@@ -228,11 +232,14 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
+        
+        /*
         vSeeds.push_back(CDNSSeedData("testnettrollcoin.jonasschnelli.ch", "testnet-seed.trollcoin.jonasschnelli.ch", true));
         vSeeds.push_back(CDNSSeedData("petertodd.org", "seed.tTRC.petertodd.org", true));
         vSeeds.push_back(CDNSSeedData("bluematt.me", "testnet-seed.bluematt.me"));
         vSeeds.push_back(CDNSSeedData("trollcoin.schildbach.de", "testnet-seed.trollcoin.schildbach.de"));
-
+        */
+        
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,222);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,156);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,139);
