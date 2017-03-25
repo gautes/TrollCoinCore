@@ -129,7 +129,7 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
             //strprintf("old mainnet genesis hash:  %s\n", hashGenesisBlock);
             for(genesis.nNonce = 0; genesis.nNonce<256; genesis.nNonce++){ } 
             LogPrintf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
-            LogPrintf("new mainnet genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            LogPrintf("new mainnet genesis nonce: %s\n", genesis.nNonce);
             LogPrintf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
             LogPrintf("Trollcoin GENESIS done!");
         }
