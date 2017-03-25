@@ -1,0 +1,81 @@
+policy_module(trollcoin, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type trollcoin_t;
+type trollcoin_exec_t;
+init_daemon_domain(trollcoin_t, trollcoin_exec_t)
+
+permissive trollcoin_t;
+
+type trollcoin_initrc_exec_t;
+init_script_file(trollcoin_initrc_exec_t)
+
+type trollcoin_conf_t;
+files_type(trollcoin_conf_t)
+
+type trollcoin_var_lib_t;
+files_type(trollcoin_var_lib_t)
+
+type trollcoin_var_run_t;
+files_type(trollcoin_var_run_t)
+
+type trollcoin_port_t;
+corenet_port(trollcoin_port_t)
+
+########################################
+#
+# trollcoin local policy
+#
+allow trollcoin_t self:process { fork };
+
+allow trollcoin_t self:fifo_file rw_fifo_file_perms;
+allow trollcoin_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(trollcoin_t, trollcoin_conf_t, trollcoin_conf_t)
+manage_files_pattern(trollcoin_t, trollcoin_conf_t, trollcoin_conf_t)
+
+manage_dirs_pattern(trollcoin_t, trollcoin_var_lib_t, trollcoin_var_lib_t)
+manage_files_pattern(trollcoin_t, trollcoin_var_lib_t, trollcoin_var_lib_t)
+files_var_lib_filetrans(trollcoin_t, trollcoin_var_lib_t, { dir file })
+
+manage_dirs_pattern(trollcoin_t, trollcoin_var_run_t, trollcoin_var_run_t)
+manage_files_pattern(trollcoin_t, trollcoin_var_run_t, trollcoin_var_run_t)
+
+sysnet_dns_name_resolve(trollcoin_t)
+corenet_all_recvfrom_unlabeled(trollcoin_t)
+
+allow trollcoin_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(trollcoin_t)
+corenet_tcp_sendrecv_generic_node(trollcoin_t)
+corenet_tcp_sendrecv_all_ports(trollcoin_t)
+corenet_tcp_bind_generic_node(trollcoin_t)
+
+gen_require(`
+    type trollcoin_port_t;
+')
+allow trollcoin_t trollcoin_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type trollcoin_port_t;
+')
+allow trollcoin_t trollcoin_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(trollcoin_t)
+
+files_read_etc_files(trollcoin_t)
+
+miscfiles_read_localization(trollcoin_t)
+
+sysnet_dns_name_resolve(trollcoin_t)
+
+allow trollcoin_t trollcoin_exec_t:file execute_no_trans;
+allow trollcoin_t self:process setsched;
+corecmd_exec_ls(trollcoin_t)
+corenet_tcp_connect_http_port(trollcoin_t)
+dev_read_urand(trollcoin_t)
+fs_getattr_xattr_fs(trollcoin_t)
+kernel_read_system_state(trollcoin_t)

@@ -1,0 +1,22 @@
+[Unit]
+Description=Trollcoin's distributed currency daemon
+After=network.target
+
+[Service]
+User=trollcoin
+Group=trollcoin
+
+Type=forking
+PIDFile=/var/lib/trollcoind/trollcoind.pid
+ExecStart=/usr/bin/trollcoind -daemon -pid=/var/lib/trollcoind/trollcoind.pid \
+-conf=/etc/trollcoin/trollcoin.conf -datadir=/var/lib/trollcoind -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

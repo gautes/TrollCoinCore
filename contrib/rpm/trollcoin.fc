@@ -1,0 +1,8 @@
+/usr/bin/trollcoin-cli		--	gen_context(system_u:object_r:trollcoin_exec_t,s0)
+/usr/sbin/trollcoind		--	gen_context(system_u:object_r:trollcoin_exec_t,s0)
+/usr/lib(64)?/trollcoin/trollcoind		--	gen_context(system_u:object_r:trollcoin_exec_t,s0)
+
+/etc/trollcoin(/.*)?		gen_context(system_u:object_r:trollcoin_conf_t,s0)
+/var/lib/trollcoin(/.*)?		gen_context(system_u:object_r:trollcoin_var_lib_t,s0)
+
+(/var)?/run/trollcoind(/.*)?   gen_context(system_u:object_r:trollcoin_var_run_t,s0)

@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/trollcoin/.trollcoin" ]; then
+	TROLLCOIND_DEFAULT_DATADIR="/var/lib/trollcoin/.trollcoin"
+else
+	TROLLCOIND_DEFAULT_DATADIR="/var/lib/trollcoind"
+fi
+
+TROLLCOIND_CONFIGFILE=${TROLLCOIND_CONFIGFILE:-/etc/trollcoin/trollcoin.conf}
+TROLLCOIND_PIDDIR=${TROLLCOIND_PIDDIR:-/var/run/trollcoind}
+TROLLCOIND_PIDFILE=${TROLLCOIND_PIDFILE:-${TROLLCOIND_PIDDIR}/trollcoind.pid}
+TROLLCOIND_DATADIR=${TROLLCOIND_DATADIR:-${TROLLCOIND_DEFAULT_DATADIR}}
+TROLLCOIND_USER=${TROLLCOIND_USER:-${TROLLCOIN_USER:-trollcoin}}
+TROLLCOIND_GROUP=${TROLLCOIND_GROUP:-trollcoin}
+TROLLCOIND_BIN=${TROLLCOIND_BIN:-/usr/bin/trollcoind}
+TROLLCOIND_NICE=${TROLLCOIND_NICE:-${NICELEVEL:-0}}
+TROLLCOIND_OPTS="${TROLLCOIND_OPTS:-${TROLLCOIN_OPTS}}"
+
+name="Trollcoin Core Daemon"
+description="Trollcoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/trollcoind"
+command_args="-pid=\"${TROLLCOIND_PIDFILE}\" \
+		-conf=\"${TROLLCOIND_CONFIGFILE}\" \
+		-datadir=\"${TROLLCOIND_DATADIR}\" \
+		-daemon \
+		${TROLLCOIND_OPTS}"
+
+required_files="${TROLLCOIND_CONFIGFILE}"
+start_stop_daemon_args="-u ${TROLLCOIND_USER} \
+			-N ${TROLLCOIND_NICE} -w 2000"
+pidfile="${TROLLCOIND_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${TROLLCOIND_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${TROLLCOIND_USER}:${TROLLCOIND_GROUP}" \
+	"${TROLLCOIND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${TROLLCOIND_USER}:${TROLLCOIND_GROUP}" \
+	"${TROLLCOIND_PIDDIR}"
+
+	checkpath -f \
+	-o ${TROLLCOIND_USER}:${TROLLCOIND_GROUP} \
+	-m 0660 \
+	${TROLLCOIND_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${TROLLCOIND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run trollcoind."
+		eerror "The setting must appear in ${TROLLCOIND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Trollcoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

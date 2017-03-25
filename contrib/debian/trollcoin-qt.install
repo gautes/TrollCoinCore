@@ -1,0 +1,6 @@
+usr/local/bin/trollcoin-qt usr/bin
+share/pixmaps/trollcoin32.xpm usr/share/pixmaps
+share/pixmaps/trollcoin16.xpm usr/share/pixmaps
+share/pixmaps/trollcoin128.png usr/share/pixmaps
+debian/trollcoin-qt.desktop usr/share/applications
+debian/trollcoin-qt.protocol usr/share/kde4/services/

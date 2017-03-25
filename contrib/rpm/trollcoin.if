@@ -1,0 +1,157 @@
+
+## <summary>policy for trollcoin</summary>
+
+
+########################################
+## <summary>
+##	Transition to trollcoin.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`trollcoin_domtrans',`
+	gen_require(`
+		type trollcoin_t, trollcoin_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, trollcoin_exec_t, trollcoin_t)
+')
+
+
+########################################
+## <summary>
+##	Execute trollcoin server in the trollcoin domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`trollcoin_initrc_domtrans',`
+	gen_require(`
+		type trollcoin_initrc_exec_t;
+	')
+
+	init_labeled_script_domtrans($1, trollcoin_initrc_exec_t)
+')
+
+
+########################################
+## <summary>
+##	Search trollcoin lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`trollcoin_search_lib',`
+	gen_require(`
+		type trollcoin_var_lib_t;
+	')
+
+	allow $1 trollcoin_var_lib_t:dir search_dir_perms;
+	files_search_var_lib($1)
+')
+
+########################################
+## <summary>
+##	Read trollcoin lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`trollcoin_read_lib_files',`
+	gen_require(`
+		type trollcoin_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	read_files_pattern($1, trollcoin_var_lib_t, trollcoin_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage trollcoin lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`trollcoin_manage_lib_files',`
+	gen_require(`
+		type trollcoin_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_files_pattern($1, trollcoin_var_lib_t, trollcoin_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage trollcoin lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`trollcoin_manage_lib_dirs',`
+	gen_require(`
+		type trollcoin_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, trollcoin_var_lib_t, trollcoin_var_lib_t)
+')
+
+
+########################################
+## <summary>
+##	All of the rules required to administrate
+##	an trollcoin environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`trollcoin_admin',`
+	gen_require(`
+		type trollcoin_t;
+		type trollcoin_initrc_exec_t;
+		type trollcoin_var_lib_t;
+	')
+
+	allow $1 trollcoin_t:process { ptrace signal_perms };
+	ps_process_pattern($1, trollcoin_t)
+
+	trollcoin_initrc_domtrans($1)
+	domain_system_change_exemption($1)
+	role_transition $2 trollcoin_initrc_exec_t system_r;
+	allow $2 system_r;
+
+	files_search_var_lib($1)
+	admin_pattern($1, trollcoin_var_lib_t)
+
+')
+
