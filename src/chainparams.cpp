@@ -119,7 +119,9 @@ public:
 
 
 consensus.hashGenesisBlock = uint256S("0x01");
-strprintf("Trollcoin Lets start!!");        
+
+LogPrintf("Trollcoin Lets start!!\n");
+
 if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         {
             strprintf("recalculating params for mainnet.\n");
