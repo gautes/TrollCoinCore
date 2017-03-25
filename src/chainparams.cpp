@@ -124,12 +124,12 @@ LogPrintf("Trollcoin Lets start!!\n");
 
 if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         {
-            strprintf("recalculating params for mainnet.\n");
-            strprintf("old mainnet genesis nonce: %s\n", genesis.nNonce);
+            LogPrintf("recalculating params for mainnet.\n");
+            LogPrintf("old mainnet genesis nonce: %s\n", genesis.nNonce);
             //strprintf("old mainnet genesis hash:  %s\n", hashGenesisBlock);
             for(genesis.nNonce = 0; genesis.nNonce<256; genesis.nNonce++){ } 
-            //strprintf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot);
-            //strprintf("new mainnet genesis nonce: %s\n", genesis.nNonce);
+            LogPrintf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot);
+            LogPrintf("new mainnet genesis nonce: %s\n", genesis.nNonce);
             //strprintf("new mainnet genesis hash: %s\n", genesis.GetHash());
             strprintf("Trollcoin GENESIS");
         }
