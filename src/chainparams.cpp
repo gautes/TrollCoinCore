@@ -116,13 +116,12 @@ public:
 
         genesis = CreateGenesisBlock(1490349783, 2083236893, 0x1d00ffff, 1, 50 * COIN);
        
-
-
-consensus.hashGenesisBlock = uint256S("0x01");
-
-LogPrintf("Trollcoin Lets start!!\n");
-
-if (true && genesis.GetHash() != consensus.hashGenesisBlock)
+        consensus.hashGenesisBlock = uint256S("0xfda603fd3a179636f50162e14af75b05838e6ba3e13c6ebc80bc775521827ba7");
+        
+        LogPrintf("Trollcoin Lets start!!\n");
+        genesis.nOnce=256;
+        
+        if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         {
             LogPrintf("recalculating params for mainnet.\n");
             LogPrintf("old mainnet genesis nonce: %s\n", genesis.nNonce);
@@ -134,11 +133,9 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
             LogPrintf("Trollcoin GENESIS done!");
         }
 
-
- 
         consensus.hashGenesisBlock = genesis.GetHash();
-        //assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
-        //assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xfda603fd3a179636f50162e14af75b05838e6ba3e13c6ebc80bc775521827ba7"));
+        assert(genesis.hashMerkleRoot == uint256S("0eb2dc67cf3e781d975197b4b6d63ca60576a96aacbdcf48b85e6c6b7fa8de16"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         /*
@@ -166,7 +163,7 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    ( 0, uint256S("0x001"))
+	    ( 0, uint256("fda603fd3a179636f50162e14af75b05838e6ba3e13c6ebc80bc775521827ba7"))
         };
 
         chainTxData = ChainTxData{
