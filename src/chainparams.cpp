@@ -121,7 +121,7 @@ public:
         LogPrintf("Trollcoin Lets start!!\n");
         genesis.nNonce=256;
         
-        if (true && genesis.GetHash() != consensus.hashGenesisBlock)
+        if (false && genesis.GetHash() != consensus.hashGenesisBlock)
         {
             LogPrintf("recalculating params for mainnet.\n");
             LogPrintf("old mainnet genesis nonce: %s\n", genesis.nNonce);
@@ -133,10 +133,12 @@ public:
             LogPrintf("Trollcoin GENESIS done!");
         }
 
+        LogPrintf("Check Genesis block ok!!\n");
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0xfda603fd3a179636f50162e14af75b05838e6ba3e13c6ebc80bc775521827ba7"));
         assert(genesis.hashMerkleRoot == uint256S("0eb2dc67cf3e781d975197b4b6d63ca60576a96aacbdcf48b85e6c6b7fa8de16"));
 
+        LogPrintf("Genesis block ok!!\n");
         // Note that of those with the service bits flag, most only support a subset of possible options
         /*
         vSeeds.push_back(CDNSSeedData("trollcoin.sipa.be", "seed.trollcoin.sipa.be", true)); // Pieter Wuille, only supports x1, x5, x9, and xd
