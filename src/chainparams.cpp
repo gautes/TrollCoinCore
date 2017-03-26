@@ -119,7 +119,7 @@ public:
         consensus.hashGenesisBlock = uint256S("0xfda603fd3a179636f50162e14af75b05838e6ba3e13c6ebc80bc775521827ba7");
         
         LogPrintf("Trollcoin Lets start!!\n");
-        genesis.nOnce=256;
+        genesis.nNonce=256;
         
         if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         {
